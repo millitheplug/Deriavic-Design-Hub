@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 function WireframeCanvas() {
@@ -12,11 +12,15 @@ function WireframeCanvas() {
     if (!ctx) return;
 
     const resize = () => {
-      canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-      canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+      const w = canvas.offsetWidth || canvas.parentElement?.offsetWidth || 600;
+      const h = canvas.offsetHeight || canvas.parentElement?.offsetHeight || 600;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      canvas.width = w * window.devicePixelRatio;
+      canvas.height = h * window.devicePixelRatio;
       ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
     };
-    resize();
+
+    requestAnimationFrame(resize);
     window.addEventListener('resize', resize);
 
     // 3D icosahedron vertices
@@ -43,15 +47,6 @@ function WireframeCanvas() {
 
     let t = 0;
 
-    const project = (x: number, y: number, z: number, w: number, h: number): [number, number, number] => {
-      const scale = Math.min(w, h) * 0.38;
-      const fov = 3;
-      const pz = z + fov;
-      const px = (x / pz) * scale + w / 2;
-      const py = (y / pz) * scale + h / 2;
-      return [px, py, pz];
-    };
-
     const rotateY = (x: number, y: number, z: number, a: number): [number, number, number] => [
       x * Math.cos(a) + z * Math.sin(a), y, -x * Math.sin(a) + z * Math.cos(a),
     ];
@@ -62,8 +57,20 @@ function WireframeCanvas() {
     const draw = () => {
       const w = canvas.offsetWidth;
       const h = canvas.offsetHeight;
+      if (!w || !h) { animRef.current = requestAnimationFrame(draw); return; }
+
       ctx.clearRect(0, 0, w, h);
       t += 0.006;
+
+      const scale = Math.min(w, h) * 0.38;
+      const fov = 3;
+
+      const project = (x: number, y: number, z: number): [number, number, number] => {
+        const pz = z + fov;
+        const px = (x / pz) * scale + w / 2;
+        const py = (y / pz) * scale + h / 2;
+        return [px, py, pz];
+      };
 
       const rotated = verts.map(([x, y, z]) => {
         let v = rotateY(x, y, z, t);
@@ -71,27 +78,27 @@ function WireframeCanvas() {
         return v;
       });
 
-      const projected = rotated.map(([x, y, z]) => project(x, y, z, w, h));
+      const projected = rotated.map(([x, y, z]) => project(x, y, z));
 
       // Draw edges with depth-based opacity
       edges.forEach(([a, b]) => {
         const [ax, ay, az] = projected[a];
         const [bx, by, bz] = projected[b];
         const depth = (az + bz) / 2 - 2.5;
-        const alpha = Math.max(0.04, Math.min(0.7, depth * 0.5));
+        const alpha = Math.max(0.04, Math.min(0.75, depth * 0.55));
         ctx.beginPath();
         ctx.strokeStyle = `rgba(245, 197, 24, ${alpha})`;
-        ctx.lineWidth = 1.2;
+        ctx.lineWidth = 1.5;
         ctx.moveTo(ax, ay);
         ctx.lineTo(bx, by);
         ctx.stroke();
       });
 
-      // Draw glow dots at vertices
+      // Glow dots at vertices
       projected.forEach(([px, py, pz]) => {
         const depth = pz - 2.5;
-        const alpha = Math.max(0.05, Math.min(0.9, depth * 0.6));
-        const size = Math.max(1, depth * 1.5);
+        const alpha = Math.max(0.05, Math.min(1, depth * 0.7));
+        const size = Math.max(1, depth * 2);
         ctx.beginPath();
         ctx.arc(px, py, size, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(245, 197, 24, ${alpha})`;
@@ -101,7 +108,7 @@ function WireframeCanvas() {
       animRef.current = requestAnimationFrame(draw);
     };
 
-    draw();
+    animRef.current = requestAnimationFrame(draw);
 
     return () => {
       cancelAnimationFrame(animRef.current);

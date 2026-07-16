@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'wouter';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -32,15 +32,24 @@ export function Navbar() {
       <motion.header
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-          isScrolled ? 'bg-background/80 backdrop-blur-md py-4 border-b border-white/5' : 'bg-transparent py-6'
+          isScrolled ? 'bg-background/80 backdrop-blur-md py-3 border-b border-white/5' : 'bg-transparent py-5'
         )}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
       >
         <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
-          <Link href="/" className="text-primary font-serif font-bold text-2xl tracking-tighter hoverable z-50">
-            DERIAVIC
+          <Link href="/" className="hoverable z-50 flex items-center gap-3">
+            <div className="h-10 w-10 rounded-full bg-white overflow-hidden flex-shrink-0 flex items-center justify-center">
+              <img
+                src="/logo.png"
+                alt="Deriavic Apparel"
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <span className="text-white font-serif font-bold text-lg tracking-tight leading-tight hidden sm:block">
+              DERIAVIC<br/><span className="text-primary text-xs font-mono font-normal tracking-widest">APPAREL</span>
+            </span>
           </Link>
 
           {/* Desktop Nav */}
@@ -75,7 +84,7 @@ export function Navbar() {
                 href="/contact"
                 className="px-6 py-2.5 rounded-full border border-white/10 text-sm font-medium hover:border-primary hover:text-primary transition-all duration-300 hoverable inline-block"
               >
-                Start a Project
+                Make an Enquiry
               </Link>
             </motion.div>
           </nav>
@@ -125,7 +134,7 @@ export function Navbar() {
             href="/contact"
             className="px-8 py-4 rounded-full bg-primary text-primary-foreground font-bold text-lg hoverable inline-block"
           >
-            Start a Project
+            Make an Enquiry
           </Link>
         </motion.div>
       </motion.div>

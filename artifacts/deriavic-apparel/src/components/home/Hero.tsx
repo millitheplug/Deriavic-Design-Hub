@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 function AnimatedGarmentCanvas() {
@@ -13,11 +13,16 @@ function AnimatedGarmentCanvas() {
     if (!ctx) return;
 
     const resize = () => {
-      canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-      canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+      const w = canvas.offsetWidth || canvas.parentElement?.offsetWidth || 800;
+      const h = canvas.offsetHeight || canvas.parentElement?.offsetHeight || 400;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      canvas.width = w * window.devicePixelRatio;
+      canvas.height = h * window.devicePixelRatio;
       ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
     };
-    resize();
+
+    // Defer first resize so layout is settled
+    requestAnimationFrame(resize);
     window.addEventListener('resize', resize);
 
     const onMouseMove = (e: MouseEvent) => {
@@ -45,28 +50,29 @@ function AnimatedGarmentCanvas() {
       return pts;
     };
 
-    const knotPts = torusKnotPoints(200);
+    const knotPts = torusKnotPoints(300);
 
     let angle = 0;
+
     const draw = () => {
       const w = canvas.offsetWidth;
       const h = canvas.offsetHeight;
-      ctx.clearRect(0, 0, w, h);
-      angle += 0.006;
+      if (!w || !h) { animRef.current = requestAnimationFrame(draw); return; }
 
-      const mx = (mouseRef.current.x - 0.5) * 0.4;
+      ctx.clearRect(0, 0, w, h);
+      angle += 0.005;
+
+      const mx = (mouseRef.current.x - 0.5) * 0.5;
       const my = (mouseRef.current.y - 0.5) * 0.4;
 
-      const scale = Math.min(w, h) * 0.1;
+      const scale = Math.min(w, h) * 0.11;
       const fov = 6;
 
       const project = (x: number, y: number, z: number) => {
-        // Rotation Y
         const cosa = Math.cos(angle + mx);
         const sina = Math.sin(angle + mx);
         const x2 = x * cosa + z * sina;
         const z2 = -x * sina + z * cosa;
-        // Rotation X (mouse tilt)
         const cosb = Math.cos(my * 0.5);
         const sinb = Math.sin(my * 0.5);
         const y2 = y * cosb - z2 * sinb;
@@ -79,28 +85,26 @@ function AnimatedGarmentCanvas() {
         };
       };
 
-      const projected = knotPts.map((p) => project(p.x, p.y, p.z));
+      const projected = knotPts.map((pt) => project(pt.x, pt.y, pt.z));
 
-      // Draw the knot as a glowing ribbon
       for (let i = 0; i < projected.length; i++) {
         const cur = projected[i];
         const next = projected[(i + 1) % projected.length];
-        const t = i / projected.length;
-        const alpha = 0.15 + 0.55 * ((cur.depth - 5.5) / 1.5);
-        const lineW = 1 + 1.5 * ((cur.depth - 5.5) / 1.5);
+        const alpha = 0.1 + 0.6 * ((cur.depth - 5.5) / 1.5);
+        const lineW = 0.5 + 2 * ((cur.depth - 5.5) / 1.5);
 
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(245, 197, 24, ${Math.max(0.05, Math.min(0.75, alpha))})`;
-        ctx.lineWidth = Math.max(0.5, lineW);
+        ctx.strokeStyle = `rgba(245, 197, 24, ${Math.max(0.04, Math.min(0.8, alpha))})`;
+        ctx.lineWidth = Math.max(0.4, lineW);
         ctx.moveTo(cur.sx, cur.sy);
         ctx.lineTo(next.sx, next.sy);
         ctx.stroke();
       }
 
-      // Glow core
+      // Soft glow core
       const cx = w / 2, cy = h / 2;
-      const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(w, h) * 0.15);
-      grd.addColorStop(0, 'rgba(245, 197, 24, 0.04)');
+      const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(w, h) * 0.2);
+      grd.addColorStop(0, 'rgba(245, 197, 24, 0.05)');
       grd.addColorStop(1, 'rgba(245, 197, 24, 0)');
       ctx.fillStyle = grd;
       ctx.fillRect(0, 0, w, h);
@@ -108,7 +112,7 @@ function AnimatedGarmentCanvas() {
       animRef.current = requestAnimationFrame(draw);
     };
 
-    draw();
+    animRef.current = requestAnimationFrame(draw);
 
     return () => {
       cancelAnimationFrame(animRef.current);
@@ -135,8 +139,6 @@ export function Hero() {
 
   const yParallax = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-
-  const [videoError, setVideoError] = useState(false);
 
   const headlineLines = [
     { text: "we design", delay: 0.2 },
@@ -190,34 +192,7 @@ export function Hero() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8, duration: 1 }}
       >
-        {!videoError ? (
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700"
-            onError={() => setVideoError(true)}
-          >
-            <source src="/attached_assets/videos/hero-runway.mp4" type="video/mp4" />
-          </video>
-        ) : null}
-
-        {/* Always show the canvas — the video error triggers showing canvas */}
-        <div
-          className="w-full h-full absolute inset-0"
-          style={{ display: videoError ? 'block' : 'none' }}
-        >
-          <AnimatedGarmentCanvas />
-        </div>
-
-        {/* Trigger video error immediately if src doesn't exist — canvas is the real hero */}
-        {videoError && (
-          <div className="absolute inset-0">
-            <AnimatedGarmentCanvas />
-          </div>
-        )}
-
+        <AnimatedGarmentCanvas />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50 pointer-events-none" />
       </motion.div>
     </div>
