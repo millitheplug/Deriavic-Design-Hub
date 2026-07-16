@@ -6,12 +6,13 @@ import { Link } from 'wouter';
 const u = (id: string, w = 600, h = 800) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&q=80&w=${w}&h=${h}`;
 
+// Helper — local fashion image stored in /public/fashion/
+const f = (name: string) => `/fashion/${name}`;
+
 // ─── Fallback shown when an individual image fails to load ────────────────────
 const FALLBACK = u('1558618666-fcd25c85cd64');
 
 // ─── Collection definitions ───────────────────────────────────────────────────
-// Images are curated from Unsplash for each Nigerian/African fashion category.
-// All URLs use direct photo IDs — no keyword guessing.
 export const portfolioPieces = [
   {
     id: "bespoke-couture",
@@ -20,18 +21,18 @@ export const portfolioPieces = [
     category: "Tailored",
     description: "Completely custom garments made to measure. Every stitch intentional, every silhouette yours — from first consultation to final fitting.",
     tags: ["Custom", "Tailored", "Luxury"],
-    hero: u("1539109136881-3be0616acf4b"),
+    hero: f("bespoke-01.png"),
     images: [
-      u("1539109136881-3be0616acf4b"),
-      u("1534528741775-53994a69daeb"),
-      u("1506629082049-509411f7d8b8"),
-      u("1520975661595-6c807be2f9f5"),
-      u("1558769132-cb1aea458c5e"),
-      u("1509631179647-0177331693ae"),
-      u("1524504388868-96c4c01da85a"),
-      u("1496747986456-63879ff4f62d"),
-      u("1515886657613-9f3515b0c78f"),
-      u("1527181038709-98d4e08bff1d"),
+      f("bespoke-01.png"),
+      f("bespoke-02.jpg"),
+      f("bespoke-03.jpg"),
+      f("bespoke-04.jpg"),
+      f("bespoke-05.jpg"),
+      f("bespoke-06.jpg"),
+      f("bespoke-07.jpg"),
+      f("bespoke-08.jpg"),
+      f("bespoke-09.jpg"),
+      f("bespoke-10.jpg"),
     ],
   },
   {
@@ -41,18 +42,18 @@ export const portfolioPieces = [
     category: "Bridal Couture",
     description: "Bridal gowns and wedding looks crafted for the modern Nigerian bride. Structured silhouettes, raw silk, and intricate detailing.",
     tags: ["Wedding", "Gown", "Ceremony"],
-    hero: u("1519741497674-4f3399c79aa0"),
+    hero: f("bridal-01.png"),
     images: [
+      f("bridal-01.png"),
+      f("bridal-02.jpg"),
+      f("bridal-03.webp"),
+      f("bridal-06.jpg"),
+      f("bridal-07.jpg"),
+      f("bridal-08.webp"),
+      f("bridal-09.webp"),
+      f("bridal-10.webp"),
+      f("bridal-11.png"),
       u("1519741497674-4f3399c79aa0"),
-      u("1511285560929-80b5a4621ccf"),
-      u("1490481651871-ab68de25d43d"),
-      u("1558618666-fcd25c85cd64"),
-      u("1534528741775-53994a69daeb"),
-      u("1506629082049-509411f7d8b8"),
-      u("1558769132-cb1aea458c5e"),
-      u("1515886657613-9f3515b0c78f"),
-      u("1509631179647-0177331693ae"),
-      u("1524504388868-96c4c01da85a"),
     ],
   },
   {
@@ -83,18 +84,18 @@ export const portfolioPieces = [
     category: "Event Wear",
     description: "Coordinated collections designed for celebrations — owambes, weddings, and naming ceremonies. Matching is an art form here.",
     tags: ["Owambe", "Group", "Celebration"],
-    hero: u("1516762889-c0e45e12e93a"),
+    hero: f("asoebi-01.png"),
     images: [
-      u("1516762889-c0e45e12e93a"),
-      u("1583391733956-6c78276477e2"),
-      u("1537832816519-689bc4a38f7a"),
-      u("1495385619627-9ffe3a42e6ed"),
-      u("1527181038709-98d4e08bff1d"),
-      u("1558618666-fcd25c85cd64"),
-      u("1490481651871-ab68de25d43d"),
-      u("1534528741775-53994a69daeb"),
-      u("1500917693408-a8de2b37e388"),
-      u("1506629082049-509411f7d8b8"),
+      f("asoebi-01.png"),
+      f("asoebi-02.jpg"),
+      f("asoebi-03.jpg"),
+      f("asoebi-04.jpg"),
+      f("asoebi-05.jpg"),
+      f("asoebi-06.webp"),
+      f("asoebi-07.jpg"),
+      f("asoebi-08.jpg"),
+      f("asoebi-09.webp"),
+      f("asoebi-10.webp"),
     ],
   },
   {
@@ -125,18 +126,18 @@ export const portfolioPieces = [
     category: "Print",
     description: "Bold African wax-print designs shaped into modern silhouettes. Color is power — and every pattern tells a story.",
     tags: ["African Print", "Wax", "Color"],
-    hero: u("1537832816519-689bc4a38f7a"),
+    hero: f("ankara-01.png"),
     images: [
-      u("1537832816519-689bc4a38f7a"),
-      u("1583391733956-6c78276477e2"),
-      u("1516762889-c0e45e12e93a"),
-      u("1544441893-42e9d2cc0b97"),
-      u("1495385619627-9ffe3a42e6ed"),
-      u("1527181038709-98d4e08bff1d"),
-      u("1509631179647-0177331693ae"),
-      u("1558618666-fcd25c85cd64"),
-      u("1500917693408-a8de2b37e388"),
-      u("1515886657613-9f3515b0c78f"),
+      f("ankara-01.png"),
+      f("ankara-03.jpg"),
+      f("ankara-04.png"),
+      f("ankara-05.png"),
+      f("ankara-06.jpg"),
+      f("ankara-07.jpg"),
+      f("ankara-08.jpg"),
+      f("ankara-09.png"),
+      f("ankara-10.png"),
+      f("ankara-11.jpg"),
     ],
   },
   {
