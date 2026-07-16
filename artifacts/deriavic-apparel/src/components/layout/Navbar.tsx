@@ -47,8 +47,9 @@ export function Navbar() {
                 className="h-full w-full object-cover"
               />
             </div>
-            <span className="text-white font-serif font-bold text-lg tracking-tight leading-tight hidden sm:block">
-              DERIAVIC<br/><span className="text-primary text-xs font-mono font-normal tracking-widest">APPAREL</span>
+            <span className="hidden sm:flex flex-col leading-tight">
+              <span className="text-white font-serif font-semibold text-sm tracking-wide">Deriavic Apparel</span>
+              <span className="text-primary text-[10px] font-mono uppercase tracking-[0.2em]">Ibadan · Nigeria</span>
             </span>
           </Link>
 
