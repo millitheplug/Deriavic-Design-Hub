@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "DERIAVIC APPAREL"
+version = "1.0.0"
+id = "artifacts/deriavic-apparel"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23904
+
+[services.development]
+run = "pnpm --filter @workspace/deriavic-apparel run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/deriavic-apparel", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/deriavic-apparel/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23904"
+BASE_PATH = "/"
