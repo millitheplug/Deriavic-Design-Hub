@@ -1,134 +1,5 @@
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-
-function AnimatedGarmentCanvas() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animRef = useRef<number>(0);
-  const mouseRef = useRef({ x: 0.5, y: 0.5 });
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const resize = () => {
-      const w = canvas.offsetWidth || canvas.parentElement?.offsetWidth || 800;
-      const h = canvas.offsetHeight || canvas.parentElement?.offsetHeight || 400;
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      canvas.width = w * window.devicePixelRatio;
-      canvas.height = h * window.devicePixelRatio;
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-    };
-
-    // Defer first resize so layout is settled
-    requestAnimationFrame(resize);
-    window.addEventListener('resize', resize);
-
-    const onMouseMove = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      mouseRef.current = {
-        x: (e.clientX - rect.left) / rect.width,
-        y: (e.clientY - rect.top) / rect.height,
-      };
-    };
-    canvas.addEventListener('mousemove', onMouseMove);
-
-    // Torus-knot approximation via parametric path
-    const torusKnotPoints = (n: number) => {
-      const pts: { x: number; y: number; z: number }[] = [];
-      const p = 2, q = 3;
-      for (let i = 0; i < n; i++) {
-        const t = (i / n) * Math.PI * 2;
-        const r = Math.cos(q * t) + 2;
-        pts.push({
-          x: r * Math.cos(p * t),
-          y: r * Math.sin(p * t),
-          z: -Math.sin(q * t),
-        });
-      }
-      return pts;
-    };
-
-    const knotPts = torusKnotPoints(300);
-
-    let angle = 0;
-
-    const draw = () => {
-      const w = canvas.offsetWidth;
-      const h = canvas.offsetHeight;
-      if (!w || !h) { animRef.current = requestAnimationFrame(draw); return; }
-
-      ctx.clearRect(0, 0, w, h);
-      angle += 0.005;
-
-      const mx = (mouseRef.current.x - 0.5) * 0.5;
-      const my = (mouseRef.current.y - 0.5) * 0.4;
-
-      const scale = Math.min(w, h) * 0.11;
-      const fov = 6;
-
-      const project = (x: number, y: number, z: number) => {
-        const cosa = Math.cos(angle + mx);
-        const sina = Math.sin(angle + mx);
-        const x2 = x * cosa + z * sina;
-        const z2 = -x * sina + z * cosa;
-        const cosb = Math.cos(my * 0.5);
-        const sinb = Math.sin(my * 0.5);
-        const y2 = y * cosb - z2 * sinb;
-        const z3 = y * sinb + z2 * cosb;
-        const pz = z3 + fov;
-        return {
-          sx: (x2 / pz) * scale + w / 2,
-          sy: (y2 / pz) * scale + h / 2,
-          depth: pz,
-        };
-      };
-
-      const projected = knotPts.map((pt) => project(pt.x, pt.y, pt.z));
-
-      for (let i = 0; i < projected.length; i++) {
-        const cur = projected[i];
-        const next = projected[(i + 1) % projected.length];
-        const alpha = 0.1 + 0.6 * ((cur.depth - 5.5) / 1.5);
-        const lineW = 0.5 + 2 * ((cur.depth - 5.5) / 1.5);
-
-        ctx.beginPath();
-        ctx.strokeStyle = `rgba(245, 197, 24, ${Math.max(0.04, Math.min(0.8, alpha))})`;
-        ctx.lineWidth = Math.max(0.4, lineW);
-        ctx.moveTo(cur.sx, cur.sy);
-        ctx.lineTo(next.sx, next.sy);
-        ctx.stroke();
-      }
-
-      // Soft glow core
-      const cx = w / 2, cy = h / 2;
-      const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(w, h) * 0.2);
-      grd.addColorStop(0, 'rgba(245, 197, 24, 0.05)');
-      grd.addColorStop(1, 'rgba(245, 197, 24, 0)');
-      ctx.fillStyle = grd;
-      ctx.fillRect(0, 0, w, h);
-
-      animRef.current = requestAnimationFrame(draw);
-    };
-
-    animRef.current = requestAnimationFrame(draw);
-
-    return () => {
-      cancelAnimationFrame(animRef.current);
-      window.removeEventListener('resize', resize);
-      canvas.removeEventListener('mousemove', onMouseMove);
-    };
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className="w-full h-full"
-      style={{ display: 'block', background: '#050505' }}
-    />
-  );
-}
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -190,9 +61,17 @@ export function Hero() {
         className="w-full mt-12 md:mt-24 h-[40vh] md:h-[60vh] relative border-t border-b border-white/10 overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.8, duration: 1 }}
+        transition={{ delay: 0.8, duration: 1.2 }}
       >
-        <AnimatedGarmentCanvas />
+        <video
+          src="/hero-intro.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover"
+          style={{ display: 'block' }}
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50 pointer-events-none" />
       </motion.div>
     </div>
