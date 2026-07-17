@@ -44,7 +44,7 @@ export function Testimonials() {
   };
 
   return (
-    <section className="py-32 bg-[#050505] relative overflow-hidden border-t border-white/5">
+    <section className="py-16 md:py-32 bg-[#050505] relative overflow-hidden border-t border-white/5">
       <div className="container mx-auto px-6 md:px-12 relative z-10">
         
         <motion.div 
@@ -56,7 +56,7 @@ export function Testimonials() {
           Testimonials
         </motion.div>
 
-        <div className="relative min-h-[300px] md:min-h-[400px] flex flex-col justify-center">
+        <div className="relative min-h-[220px] md:min-h-[380px] flex flex-col justify-center">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={currentIndex}
@@ -67,7 +67,7 @@ export function Testimonials() {
               transition={{ type: "spring", stiffness: 100, damping: 20 }}
               className="max-w-4xl"
             >
-              <h3 className="text-3xl md:text-5xl lg:text-6xl font-serif font-medium text-white leading-tight italic mb-12">
+              <h3 className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-serif font-medium text-white leading-tight italic mb-8 md:mb-12">
                 "{testimonials[currentIndex].quote}"
               </h3>
               

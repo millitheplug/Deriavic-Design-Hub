@@ -264,7 +264,7 @@ export function PortfolioPreview() {
                   <span className="w-1 h-1 rounded-full bg-primary" />
                   <span>{piece.category}</span>
                 </div>
-                <h3 className="flex-1 text-3xl md:text-5xl font-serif font-bold text-white group-hover:text-primary transition-colors duration-300 leading-tight">
+                <h3 className="flex-1 text-2xl sm:text-3xl md:text-5xl font-serif font-bold text-white group-hover:text-primary transition-colors duration-300 leading-tight">
                   {piece.title}
                 </h3>
                 <div className="flex items-center text-primary font-medium opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-300 min-w-[160px] justify-end">
@@ -280,7 +280,7 @@ export function PortfolioPreview() {
                     <div
                       key={i}
                       className="relative flex-shrink-0 overflow-hidden rounded-lg bg-secondary"
-                      style={{ width: 180, height: 260 }}
+                      style={{ width: 'clamp(140px, 28vw, 180px)', height: 'clamp(200px, 40vw, 260px)' }}
                     >
                       <img
                         src={img}

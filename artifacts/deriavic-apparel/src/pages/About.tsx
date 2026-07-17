@@ -14,7 +14,7 @@ export default function About() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 100 }}
         >
-          <h1 className="text-5xl md:text-8xl font-serif font-bold tracking-tighter text-white leading-tight mb-8">
+          <h1 className="text-4xl sm:text-5xl md:text-8xl font-serif font-bold tracking-tighter text-white leading-tight mb-8">
             Rooted in <span className="text-primary italic">Ibadan.</span> <br/>
             Built for the world.
           </h1>

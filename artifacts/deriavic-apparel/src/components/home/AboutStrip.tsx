@@ -38,7 +38,7 @@ export function AboutStrip() {
             </motion.h2>
           </div>
 
-          <div className="w-full md:w-1/2 relative h-[500px] md:h-[600px] flex items-center justify-center">
+          <div className="w-full md:w-1/2 relative h-[300px] sm:h-[400px] md:h-[600px] flex items-center justify-center">
             <motion.div 
               className="relative w-[80%] h-[80%] rounded-2xl overflow-hidden shadow-2xl border border-white/10"
               style={{ rotate, y }}

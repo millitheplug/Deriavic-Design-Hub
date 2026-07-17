@@ -17,10 +17,10 @@ export default function Works() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 100 }}
         >
-          <h1 className="text-5xl md:text-8xl font-serif font-bold tracking-tighter text-white mb-6">
+          <h1 className="text-4xl sm:text-5xl md:text-8xl font-serif font-bold tracking-tighter text-white mb-6">
             Selected <span className="text-primary italic">Works</span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl">
+          <p className="text-base md:text-xl text-muted-foreground max-w-2xl">
             A comprehensive archive of our collections, bespoke pieces, and editorial explorations from our Ibadan studio.
           </p>
         </motion.div>
@@ -45,7 +45,7 @@ export default function Works() {
                 <span className="text-primary/40 font-mono text-sm font-bold min-w-[3rem]">
                   {String(index + 1).padStart(2, '0')}
                 </span>
-                <h2 className="flex-1 text-4xl md:text-6xl font-serif font-bold text-white group-hover:text-primary transition-colors duration-300">
+                <h2 className="flex-1 text-2xl sm:text-4xl md:text-6xl font-serif font-bold text-white group-hover:text-primary transition-colors duration-300">
                   {piece.title}
                 </h2>
                 <div className="flex items-center gap-6 text-sm text-muted-foreground font-mono uppercase tracking-widest">
@@ -60,13 +60,13 @@ export default function Works() {
             </div>
 
             {/* Full-width image strip — spans edge to edge */}
-            <div className="w-full overflow-x-auto scrollbar-hide pb-8" style={{ scrollbarWidth: 'none' }}>
+            <div className="w-full overflow-x-auto scrollbar-hide pb-6" style={{ scrollbarWidth: 'none' }}>
               <div className="flex gap-3 px-6 md:px-12" style={{ width: 'max-content' }}>
                 {piece.images.map((img, i) => (
                   <motion.div
                     key={i}
                     className="relative flex-shrink-0 overflow-hidden rounded-xl bg-secondary"
-                    style={{ width: 240, height: 340 }}
+                    style={{ width: 'clamp(160px, 30vw, 240px)', height: 'clamp(220px, 42vw, 340px)' }}
                     whileHover={{ scale: 1.02 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   >

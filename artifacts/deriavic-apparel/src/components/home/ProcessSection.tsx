@@ -96,8 +96,8 @@ function StepCard({
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08, type: 'spring', stiffness: 100, damping: 20 }}
-      className="flex flex-col justify-between rounded-2xl bg-white/[0.04] border border-white/10 p-6 min-w-[260px] flex-1"
-      style={{ minHeight: 260 }}
+      className="flex flex-col justify-between rounded-2xl bg-white/[0.04] border border-white/10 p-6 flex-shrink-0 snap-start w-[80vw] sm:w-[60vw] md:w-auto md:flex-1"
+      style={{ minHeight: 240 }}
     >
       {/* Top row */}
       <div>
@@ -192,7 +192,8 @@ export function ProcessSection() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="flex flex-col md:flex-row gap-4"
+            className="flex flex-row md:flex-row gap-4 overflow-x-auto pb-4 md:pb-0 snap-x snap-mandatory md:overflow-x-visible scrollbar-hide"
+            style={{ scrollbarWidth: 'none' }}
           >
             {steps.map((s, i) => (
               <StepCard key={s.step} {...s} index={i} />

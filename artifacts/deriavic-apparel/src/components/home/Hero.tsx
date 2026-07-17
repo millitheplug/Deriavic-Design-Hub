@@ -58,7 +58,7 @@ export function Hero() {
       </div>
 
       <motion.div
-        className="w-full mt-12 md:mt-24 h-[40vh] md:h-[60vh] relative border-t border-b border-white/10 overflow-hidden"
+        className="w-full mt-8 md:mt-16 h-[38vh] md:h-[58vh] relative overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8, duration: 1.2 }}
@@ -72,7 +72,9 @@ export function Hero() {
           className="w-full h-full object-cover"
           style={{ display: 'block' }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50 pointer-events-none" />
+        {/* top + bottom black fade — blends seamlessly with background */}
+        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent pointer-events-none" />
       </motion.div>
     </div>
   );

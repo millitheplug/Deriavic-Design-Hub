@@ -117,14 +117,14 @@ export function InteractiveChart() {
 
         {/* Card */}
         <motion.div
-          className="rounded-2xl border border-white/10 bg-white/[0.03] overflow-hidden grid md:grid-cols-[1fr_2fr] max-w-5xl mx-auto"
+          className="rounded-2xl border border-white/10 bg-white/[0.03] overflow-hidden grid grid-cols-1 md:grid-cols-[1fr_2fr] max-w-5xl mx-auto"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ type: 'spring', stiffness: 80, delay: 0.1 }}
         >
           {/* Left — diagram */}
-          <div className="bg-white/[0.03] border-r border-white/8 px-6 py-8">
+          <div className="bg-white/[0.03] border-b md:border-b-0 md:border-r border-white/8 px-6 py-8 hidden md:block">
             <BodyDiagram />
           </div>
 
@@ -136,7 +136,7 @@ export function InteractiveChart() {
             </p>
 
             {/* Fields grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-5 gap-y-5 mb-5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-4 mb-5">
               {/* Bust */}
               <div>
                 <label className="block text-xs text-white/55 mb-1.5">
@@ -147,7 +147,7 @@ export function InteractiveChart() {
                   value={values.bust}
                   placeholder="34"
                   onChange={(e) => handleChange('bust', e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-white/20 focus:outline-none focus:border-primary/50 transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-primary/50 transition-colors min-h-[44px]"
                 />
               </div>
               {/* Waist */}
@@ -160,7 +160,7 @@ export function InteractiveChart() {
                   value={values.waist}
                   placeholder="26"
                   onChange={(e) => handleChange('waist', e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-white/20 focus:outline-none focus:border-primary/50 transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-primary/50 transition-colors min-h-[44px]"
                 />
               </div>
               {/* Hips */}
@@ -173,7 +173,7 @@ export function InteractiveChart() {
                   value={values.hips}
                   placeholder="38"
                   onChange={(e) => handleChange('hips', e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-white/20 focus:outline-none focus:border-primary/50 transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-primary/50 transition-colors min-h-[44px]"
                 />
               </div>
               {/* Shoulder to floor */}
@@ -186,7 +186,7 @@ export function InteractiveChart() {
                   value={values.shoulder}
                   placeholder="58"
                   onChange={(e) => handleChange('shoulder', e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-white/20 focus:outline-none focus:border-primary/50 transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-primary/50 transition-colors min-h-[44px]"
                 />
               </div>
               {/* Gele */}
@@ -197,7 +197,7 @@ export function InteractiveChart() {
                   value={values.gele}
                   placeholder="12"
                   onChange={(e) => handleChange('gele', e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-white/20 focus:outline-none focus:border-primary/50 transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-primary/50 transition-colors min-h-[44px]"
                 />
               </div>
               {/* System lock */}
