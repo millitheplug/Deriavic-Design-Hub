@@ -2,6 +2,7 @@ import { Hero } from '@/components/home/Hero';
 import { AboutStrip } from '@/components/home/AboutStrip';
 import { ThreeShowcase } from '@/components/home/ThreeShowcase';
 import { PortfolioPreview } from '@/components/home/PortfolioPreview';
+import { ProcessSection } from '@/components/home/ProcessSection';
 import { ServicesAccordion } from '@/components/home/ServicesAccordion';
 import { Testimonials } from '@/components/home/Testimonials';
 import { CtaStrip } from '@/components/home/CtaStrip';
@@ -13,6 +14,7 @@ export default function Home() {
       <AboutStrip />
       <ThreeShowcase />
       <PortfolioPreview />
+      <ProcessSection />
       <ServicesAccordion />
       <Testimonials />
       <CtaStrip />
