@@ -34,16 +34,7 @@ export function Hero() {
           ))}
 
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mt-4 overflow-hidden">
-            <motion.a
-              href="/contact"
-              className="hoverable inline-flex items-center justify-center px-8 py-4 rounded-full bg-primary text-black font-bold text-xl hover:scale-105 transition-transform"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.5, type: "spring", stiffness: 200, damping: 20 }}
-            >
-              Hire Us
-            </motion.a>
-            <div className="overflow-hidden">
+            <div className="overflow-hidden order-1 md:order-2">
               <motion.h1
                 className="font-display text-[12vw] md:text-[8vw] font-bold leading-[0.9] tracking-tighter text-white"
                 initial={{ y: "100%" }}
@@ -53,6 +44,15 @@ export function Hero() {
                 of fashion.
               </motion.h1>
             </div>
+            <motion.a
+              href="/contact"
+              className="hoverable inline-flex items-center justify-center px-8 py-4 rounded-full bg-primary text-black font-bold text-xl hover:scale-105 transition-transform order-2 md:order-1"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5, type: "spring", stiffness: 200, damping: 20 }}
+            >
+              Hire Us
+            </motion.a>
           </div>
         </motion.div>
       </div>
