@@ -1,0 +1,8 @@
+[build]
+  command = "pnpm --filter @workspace/deriavic-apparel run build"
+  publish = "artifacts/deriavic-apparel/dist/public"
+
+[build.environment]
+  NODE_VERSION = "22"
+  PORT = "5173"
+  BASE_PATH = "/"
