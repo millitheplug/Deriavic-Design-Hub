@@ -21,17 +21,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Install pnpm before setup-node asks for the pnpm executable while
+      # configuring its dependency cache.
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: pnpm
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-          run_install: false
+      - name: Verify toolchain
+        run: |
+          node --version
+          pnpm --version
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -42,6 +49,9 @@ jobs:
           BASE_PATH: /Deriavic-Design-Hub/
           PORT: 4173
         run: pnpm --filter @workspace/deriavic-apparel run build
+
+      - name: Verify build output
+        run: test -f artifacts/deriavic-apparel/dist/public/index.html
 
       - name: Configure SPA fallback
         run: cp artifacts/deriavic-apparel/dist/public/index.html artifacts/deriavic-apparel/dist/public/404.html
