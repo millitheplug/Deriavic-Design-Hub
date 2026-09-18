@@ -2,38 +2,37 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'wouter';
 
-// Keep the original external Unsplash placeholders exactly as they were used before
-// the local-image replacement, while leaving the current routing and layout intact.
-const u = (id: string) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&q=80&w=800`;
-
-const generatedModules = import.meta.glob('@assets/generated_images/*.{jpg,jpeg,png,webp}', {
-  eager: true,
-  import: 'default',
-}) as Record<string, string>;
-const generated = Object.entries(generatedModules)
-  .sort(([a], [b]) => a.localeCompare(b))
-  .map(([, url]) => url);
-
-const f = (name: string) => {
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) >>> 0;
-  return generated[hash % generated.length];
+// Use the original fashion images already stored in the repository.
+// Only image sources are being restored; collection IDs, links, routes and layout stay unchanged.
+const fashionFiles: Record<string, string[]> = {
+  bespoke: ['bespoke-01.png','bespoke-02.jpg','bespoke-03.jpg','bespoke-04.jpg','bespoke-05.jpg','bespoke-06.jpg','bespoke-07.jpg','bespoke-08.jpg','bespoke-09.jpg','bespoke-10.jpg'],
+  bridal: ['bridal-01.png','bridal-02.jpg','bridal-03.webp','bridal-06.jpg','bridal-07.jpg','bridal-08.webp','bridal-09.webp','bridal-10.webp','bridal-11.png'],
+  asooke: ['asooke-01.png','asooke-02.jpg','asooke-03.jpg','asooke-04.jpg','asooke-05.jpg','asooke-06.jpg','asooke-07.jpg','asooke-08.jpg','asooke-09.jpg'],
+  asoebi: ['asoebi-01.png','asoebi-02.jpg','asoebi-03.jpg','asoebi-04.jpg','asoebi-05.jpg','asoebi-06.webp','asoebi-07.jpg','asoebi-08.jpg','asoebi-09.webp','asoebi-10.webp'],
+  rtw: ['rtw-01.png','rtw-03.jpg','rtw-04.jpg','rtw-05.jpg','rtw-06.jpg','rtw-07.jpg','rtw-09.jpg','rtw-10.jpg'],
+  ankara: ['ankara-01.png','ankara-03.jpg','ankara-04.png','ankara-05.png','ankara-06.jpg','ankara-07.jpg','ankara-08.jpg','ankara-09.png','ankara-10.png','ankara-11.jpg','ankara-12.jpg'],
+  kids: ['kids-01.png','kids-02.jpg','kids-03.jpg','kids-04.jpg','kids-05.png','kids-06.jpg','kids-07.jpg','kids-08.jpg','kids-09.webp','kids-10.webp'],
+  editorial: ['editorial-01.png','editorial-02.png','editorial-03.png','editorial-04.png','editorial-05.webp','editorial-06.webp','editorial-07.jpg','editorial-08.jpg','editorial-09.jpg','editorial-10.jpg'],
+  fittings: ['fittings-01.png','fittings-02.jpg','fittings-03.png','fittings-04.png','fittings-05.jpg','fittings-06.jpg','fittings-07.jpg','fittings-08.jpg','fittings-09.jpg'],
+  other: ['other-01.png','other-02.png','other-03.jpg','other-04.jpg','other-05.webp','other-06.webp','other-07.jpg','other-08.jpg','other-09.avif','other-10.avif'],
 };
-const FALLBACK = `https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=800`;
+
+const fashionUrl = (file: string) => `${import.meta.env.BASE_URL}fashion/${file}`;
+const images = (prefix: string) => (fashionFiles[prefix] || []).map(fashionUrl);
+const FALLBACK = fashionUrl('bespoke-01.png');
 export const FALLBACK_IMAGE = FALLBACK;
-const images = (prefix: string, count = 10) => Array.from({ length: count }, (_, i) => f(`${prefix}-${i + 1}`));
 
 export const portfolioPieces = [
-  { id:'bespoke-couture', title:'Bespoke Couture', year:'2024', category:'Tailored', description:'Completely custom garments made to measure. Every stitch intentional, every silhouette yours — from first consultation to final fitting.', tags:['Custom','Tailored','Luxury'], hero:f('bespoke-01'), images:images('bespoke') },
-  { id:'bridal', title:'Bridal', year:'2024', category:'Bridal Couture', description:'Bridal gowns and wedding looks crafted for the modern Nigerian bride. Structured silhouettes, raw silk, and intricate detailing.', tags:['Wedding','Gown','Ceremony'], hero:f('bridal-01'), images:images('bridal',9).concat(u('1519741497674-4f3399c79aa0')) },
-  { id:'aso-oke', title:'Aso-Oke', year:'2024', category:'Traditional', description:'Handwoven Yoruba Aso-Oke reinterpreted for the contemporary wardrobe — ceremonial, celebratory, and unmistakably rooted.', tags:['Yoruba','Handwoven','Heritage'], hero:f('asooke-01'), images:images('asooke',9).concat(u('1583391733956-6c78276477e2')) },
-  { id:'asoebi', title:'Asoebi', year:'2023', category:'Event Wear', description:'Coordinated collections designed for celebrations — owambes, weddings, and naming ceremonies. Matching is an art form here.', tags:['Owambe','Group','Celebration'], hero:f('asoebi-01'), images:images('asoebi') },
-  { id:'ready-to-wear', title:'Ready-to-Wear', year:'2024', category:'RTW', description:'Structured pieces ready for the real world. Everyday luxury — perfectly fitted off the rack, straight from our Ibadan studio.', tags:['Everyday','Collection','Wearable'], hero:f('rtw-01'), images:images('rtw',8).concat([u('1558618666-fcd25c85cd64'),u('1529139374236-5f756b3e4f5b')]) },
-  { id:'ankara', title:'Ankara', year:'2023', category:'Print', description:'Bold African wax-print designs shaped into modern silhouettes. Color is power — and every pattern tells a story.', tags:['African Print','Wax','Color'], hero:f('ankara-01'), images:images('ankara') },
-  { id:'kids', title:'Kids', year:'2024', category:"Children's Wear", description:'Miniature couture for little royals. Traditional and contemporary designs crafted for children — because fashion starts early.', tags:['Children','Mini','Playful'], hero:f('kids-01'), images:images('kids') },
-  { id:'editorial-shoot', title:'Editorial / Shoot', year:'2023', category:'Editorial', description:'High-concept fashion photography and campaign lookbooks. When a garment becomes a statement and the camera tells the whole story.', tags:['Campaign','Lookbook','Concept'], hero:f('editorial-01'), images:images('editorial') },
-  { id:'fittings', title:'Fittings', year:'2024', category:'Studio', description:'Inside our Ibadan studio — the behind-the-scenes of creation. Where fabric meets body and ideas become reality, stitch by stitch.', tags:['Studio','Process','BTS'], hero:f('fittings-01'), images:images('fittings',9).concat(u('1558769132-cb1aea458c5e')) },
-  { id:'other', title:'Other Pieces', year:'2023', category:'Miscellaneous', description:"One-of-a-kind commissions, experimental pieces, and special collaborations that don't fit neatly into a category — because great work rarely does.", tags:['Capsule','Collab','Special'], hero:f('other-01'), images:images('other') },
+  { id:'bespoke-couture', title:'Bespoke Couture', year:'2024', category:'Tailored', description:'Completely custom garments made to measure. Every stitch intentional, every silhouette yours — from first consultation to final fitting.', tags:['Custom','Tailored','Luxury'], hero:fashionUrl('bespoke-01.png'), images:images('bespoke') },
+  { id:'bridal', title:'Bridal', year:'2024', category:'Bridal Couture', description:'Bridal gowns and wedding looks crafted for the modern Nigerian bride. Structured silhouettes, raw silk, and intricate detailing.', tags:['Wedding','Gown','Ceremony'], hero:fashionUrl('bridal-01.png'), images:images('bridal') },
+  { id:'aso-oke', title:'Aso-Oke', year:'2024', category:'Traditional', description:'Handwoven Yoruba Aso-Oke reinterpreted for the contemporary wardrobe — ceremonial, celebratory, and unmistakably rooted.', tags:['Yoruba','Handwoven','Heritage'], hero:fashionUrl('asooke-01.png'), images:images('asooke') },
+  { id:'asoebi', title:'Asoebi', year:'2023', category:'Event Wear', description:'Coordinated collections designed for celebrations — owambes, weddings, and naming ceremonies. Matching is an art form here.', tags:['Owambe','Group','Celebration'], hero:fashionUrl('asoebi-01.png'), images:images('asoebi') },
+  { id:'ready-to-wear', title:'Ready-to-Wear', year:'2024', category:'RTW', description:'Structured pieces ready for the real world. Everyday luxury — perfectly fitted off the rack, straight from our Ibadan studio.', tags:['Everyday','Collection','Wearable'], hero:fashionUrl('rtw-01.png'), images:images('rtw') },
+  { id:'ankara', title:'Ankara', year:'2023', category:'Print', description:'Bold African wax-print designs shaped into modern silhouettes. Color is power — and every pattern tells a story.', tags:['African Print','Wax','Color'], hero:fashionUrl('ankara-01.png'), images:images('ankara') },
+  { id:'kids', title:'Kids', year:'2024', category:"Children's Wear", description:'Miniature couture for little royals. Traditional and contemporary designs crafted for children — because fashion starts early.', tags:['Children','Mini','Playful'], hero:fashionUrl('kids-01.png'), images:images('kids') },
+  { id:'editorial-shoot', title:'Editorial / Shoot', year:'2023', category:'Editorial', description:'High-concept fashion photography and campaign lookbooks. When a garment becomes a statement and the camera tells the whole story.', tags:['Campaign','Lookbook','Concept'], hero:fashionUrl('editorial-01.png'), images:images('editorial') },
+  { id:'fittings', title:'Fittings', year:'2024', category:'Studio', description:'Inside our Ibadan studio — the behind-the-scenes of creation. Where fabric meets body and ideas become reality, stitch by stitch.', tags:['Studio','Process','BTS'], hero:fashionUrl('fittings-01.png'), images:images('fittings') },
+  { id:'other', title:'Other Pieces', year:'2023', category:'Miscellaneous', description:"One-of-a-kind commissions, experimental pieces, and special collaborations that don't fit neatly into a category — because great work rarely does.", tags:['Capsule','Collab','Special'], hero:fashionUrl('other-01.png'), images:images('other') },
 ];
 
 export function PortfolioPreview() {
