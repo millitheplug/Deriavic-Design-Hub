@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
-import { portfolioPieces } from '@/components/home/PortfolioPreview';
+import { Link } from 'wouter';
+import { portfolioPieces, FALLBACK_IMAGE } from '@/components/home/PortfolioPreview';
 import { X, ArrowRight } from 'lucide-react';
 
 export default function Works() {
@@ -76,7 +77,7 @@ export default function Works() {
                       className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
                       loading="lazy"
                       onError={(e) => {
-                        e.currentTarget.src = `https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=500`;
+                        e.currentTarget.src = FALLBACK_IMAGE;
                       }}
                     />
                     <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent">
@@ -154,7 +155,7 @@ export default function Works() {
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                       loading="lazy"
                       onError={(e) => {
-                        e.currentTarget.src = `https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=600`;
+                        e.currentTarget.src = FALLBACK_IMAGE;
                       }}
                     />
                   </motion.div>
@@ -176,12 +177,12 @@ export default function Works() {
                   <div className="text-sm text-primary font-mono uppercase tracking-widest mb-2">Interested in this collection?</div>
                   <h3 className="text-3xl font-serif font-bold text-white">Let's create something together.</h3>
                 </div>
-                <a
+                <Link
                   href="/contact"
                   className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-primary text-black font-bold hover:scale-105 transition-transform hoverable"
                 >
                   Make an Enquiry <ArrowRight size={18} />
-                </a>
+                </Link>
               </div>
             </div>
           </motion.div>

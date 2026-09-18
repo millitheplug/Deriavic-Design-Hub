@@ -1,7 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-
-const aboutImage = 'https://raw.githubusercontent.com/millitheplug/Deriavic-Design-Hub/main/attached_assets/generated_images/about-designer.jpg';
+import aboutImage from '@assets/generated_images/about-designer.jpg';
 
 export function AboutStrip() {
   const containerRef = useRef<HTMLDivElement>(null);

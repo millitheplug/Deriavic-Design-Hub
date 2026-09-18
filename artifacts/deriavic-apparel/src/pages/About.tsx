@@ -1,14 +1,18 @@
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
 import { ArrowRight } from 'lucide-react';
+import designerImg from '@assets/generated_images/about-designer.jpg';
+import asoOkeImg from '@assets/generated_images/aso-oke.jpg';
+import clayImg from '@assets/generated_images/clay-carbon.jpg';
+import expertiseImg from '@assets/generated_images/expertise.jpg';
+import ironSilkImg from '@assets/generated_images/iron-silk.jpg';
 
-const ASSET_BASE = 'https://raw.githubusercontent.com/millitheplug/Deriavic-Design-Hub/main/attached_assets/generated_images';
 const images = {
-  designer: `${ASSET_BASE}/about-designer.jpg`,
-  asoOke: `${ASSET_BASE}/aso-oke.jpg`,
-  clay: `${ASSET_BASE}/clay-carbon.jpg`,
-  expertise: `${ASSET_BASE}/expertise.jpg`,
-  ironSilk: `${ASSET_BASE}/iron-silk.jpg`,
+  designer: designerImg,
+  asoOke: asoOkeImg,
+  clay: clayImg,
+  expertise: expertiseImg,
+  ironSilk: ironSilkImg,
 };
 
 export default function About() {

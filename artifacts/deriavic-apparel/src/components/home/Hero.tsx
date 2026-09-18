@@ -1,9 +1,7 @@
 import { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-
-const ASSET_BASE = 'https://raw.githubusercontent.com/millitheplug/Deriavic-Design-Hub/main/attached_assets';
-const heroVideo = `${ASSET_BASE}/Green_Black_Modern_Typographic_Inspiring_Dream_Creativity_Vide_1784299432337.mp4`;
-const heroPoster = `${ASSET_BASE}/generated_images/street-scripture.jpg`;
+import heroVideo from '@assets/Green_Black_Modern_Typographic_Inspiring_Dream_Creativity_Vide_1784299432337.mp4';
+import heroPoster from '@assets/generated_images/street-scripture.jpg';
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);

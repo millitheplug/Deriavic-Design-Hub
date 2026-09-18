@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-const ASSET_BASE = 'https://raw.githubusercontent.com/millitheplug/Deriavic-Design-Hub/main/attached_assets/generated_images';
-const expertiseImage = `${ASSET_BASE}/expertise.jpg`;
-const fallbackImage = `${ASSET_BASE}/about-designer.jpg`;
+import expertiseImage from '@assets/generated_images/expertise.jpg';
+import fallbackImage from '@assets/generated_images/about-designer.jpg';
 
 const services = [
   { id: '01', title: 'Bespoke Couture Design' },

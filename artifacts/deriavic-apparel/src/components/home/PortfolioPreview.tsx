@@ -2,27 +2,39 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'wouter';
 
-const ASSET_BASE = 'https://raw.githubusercontent.com/millitheplug/Deriavic-Design-Hub/main/attached_assets/generated_images';
-const generated = ['about-designer.jpg','aso-oke.jpg','clay-carbon.jpg','expertise.jpg','iron-silk.jpg','midnight-lagos.jpg','oriki.jpg','street-scripture.jpg'];
-const u = (id: string) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&q=80&w=800`;
+// All portfolio imagery is bundled from the repo's own generated_images folder
+// (via the `@assets` alias, resolved at build time by Vite) rather than
+// hot-linked from raw.githubusercontent.com or fabricated Unsplash photo IDs.
+// This keeps the gallery working offline, on any host, with no external
+// dependency or rate limits.
+const generatedModules = import.meta.glob('@assets/generated_images/*.{jpg,jpeg,png,webp}', {
+  eager: true,
+  import: 'default',
+}) as Record<string, string>;
+const generated = Object.entries(generatedModules)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([, url]) => url);
+
 const f = (name: string) => {
   let hash = 0;
   for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) >>> 0;
-  return `${ASSET_BASE}/${generated[hash % generated.length]}`;
+  return generated[hash % generated.length];
 };
-const FALLBACK = `${ASSET_BASE}/expertise.jpg`;
+const expertiseEntry = Object.entries(generatedModules).find(([path]) => path.endsWith('/expertise.jpg'));
+const FALLBACK = expertiseEntry?.[1] ?? generated[0];
+export const FALLBACK_IMAGE = FALLBACK;
 const images = (prefix: string, count = 10) => Array.from({ length: count }, (_, i) => f(`${prefix}-${i + 1}`));
 
 export const portfolioPieces = [
   { id:'bespoke-couture', title:'Bespoke Couture', year:'2024', category:'Tailored', description:'Completely custom garments made to measure. Every stitch intentional, every silhouette yours — from first consultation to final fitting.', tags:['Custom','Tailored','Luxury'], hero:f('bespoke-01'), images:images('bespoke') },
-  { id:'bridal', title:'Bridal', year:'2024', category:'Bridal Couture', description:'Bridal gowns and wedding looks crafted for the modern Nigerian bride. Structured silhouettes, raw silk, and intricate detailing.', tags:['Wedding','Gown','Ceremony'], hero:f('bridal-01'), images:images('bridal',9).concat(u('1519741497674-4f3399c79aa0')) },
-  { id:'aso-oke', title:'Aso-Oke', year:'2024', category:'Traditional', description:'Handwoven Yoruba Aso-Oke reinterpreted for the contemporary wardrobe — ceremonial, celebratory, and unmistakably rooted.', tags:['Yoruba','Handwoven','Heritage'], hero:f('asooke-01'), images:images('asooke',9).concat(u('1583391733956-6c78276477e2')) },
+  { id:'bridal', title:'Bridal', year:'2024', category:'Bridal Couture', description:'Bridal gowns and wedding looks crafted for the modern Nigerian bride. Structured silhouettes, raw silk, and intricate detailing.', tags:['Wedding','Gown','Ceremony'], hero:f('bridal-01'), images:images('bridal',10) },
+  { id:'aso-oke', title:'Aso-Oke', year:'2024', category:'Traditional', description:'Handwoven Yoruba Aso-Oke reinterpreted for the contemporary wardrobe — ceremonial, celebratory, and unmistakably rooted.', tags:['Yoruba','Handwoven','Heritage'], hero:f('asooke-01'), images:images('asooke',10) },
   { id:'asoebi', title:'Asoebi', year:'2023', category:'Event Wear', description:'Coordinated collections designed for celebrations — owambes, weddings, and naming ceremonies. Matching is an art form here.', tags:['Owambe','Group','Celebration'], hero:f('asoebi-01'), images:images('asoebi') },
-  { id:'ready-to-wear', title:'Ready-to-Wear', year:'2024', category:'RTW', description:'Structured pieces ready for the real world. Everyday luxury — perfectly fitted off the rack, straight from our Ibadan studio.', tags:['Everyday','Collection','Wearable'], hero:f('rtw-01'), images:images('rtw',8).concat([u('1558618666-fcd25c85cd64'),u('1529139374236-5f756b3e4f5b')]) },
+  { id:'ready-to-wear', title:'Ready-to-Wear', year:'2024', category:'RTW', description:'Structured pieces ready for the real world. Everyday luxury — perfectly fitted off the rack, straight from our Ibadan studio.', tags:['Everyday','Collection','Wearable'], hero:f('rtw-01'), images:images('rtw',10) },
   { id:'ankara', title:'Ankara', year:'2023', category:'Print', description:'Bold African wax-print designs shaped into modern silhouettes. Color is power — and every pattern tells a story.', tags:['African Print','Wax','Color'], hero:f('ankara-01'), images:images('ankara') },
   { id:'kids', title:'Kids', year:'2024', category:"Children's Wear", description:'Miniature couture for little royals. Traditional and contemporary designs crafted for children — because fashion starts early.', tags:['Children','Mini','Playful'], hero:f('kids-01'), images:images('kids') },
   { id:'editorial-shoot', title:'Editorial / Shoot', year:'2023', category:'Editorial', description:'High-concept fashion photography and campaign lookbooks. When a garment becomes a statement and the camera tells the whole story.', tags:['Campaign','Lookbook','Concept'], hero:f('editorial-01'), images:images('editorial') },
-  { id:'fittings', title:'Fittings', year:'2024', category:'Studio', description:'Inside our Ibadan studio — the behind-the-scenes of creation. Where fabric meets body and ideas become reality, stitch by stitch.', tags:['Studio','Process','BTS'], hero:f('fittings-01'), images:images('fittings',9).concat(u('1558769132-cb1aea458c5e')) },
+  { id:'fittings', title:'Fittings', year:'2024', category:'Studio', description:'Inside our Ibadan studio — the behind-the-scenes of creation. Where fabric meets body and ideas become reality, stitch by stitch.', tags:['Studio','Process','BTS'], hero:f('fittings-01'), images:images('fittings',10) },
   { id:'other', title:'Other Pieces', year:'2023', category:'Miscellaneous', description:"One-of-a-kind commissions, experimental pieces, and special collaborations that don't fit neatly into a category — because great work rarely does.", tags:['Capsule','Collab','Special'], hero:f('other-01'), images:images('other') },
 ];
 
