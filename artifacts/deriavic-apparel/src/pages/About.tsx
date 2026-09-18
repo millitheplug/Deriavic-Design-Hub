@@ -2,17 +2,13 @@ import { motion } from 'framer-motion';
 import { Link } from 'wouter';
 import { ArrowRight } from 'lucide-react';
 import designerImg from '@assets/generated_images/about-designer.jpg';
-import asoOkeImg from '@assets/generated_images/aso-oke.jpg';
-import clayImg from '@assets/generated_images/clay-carbon.jpg';
-import expertiseImg from '@assets/generated_images/expertise.jpg';
-import ironSilkImg from '@assets/generated_images/iron-silk.jpg';
 
 const images = {
   designer: designerImg,
-  asoOke: asoOkeImg,
-  clay: clayImg,
-  expertise: expertiseImg,
-  ironSilk: ironSilkImg,
+  asoOke: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&q=80&w=500',
+  clay: 'https://images.unsplash.com/photo-1583391733956-6c78276477e2?auto=format&fit=crop&q=80&w=500',
+  expertise: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&q=80&w=500',
+  ironSilk: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&q=80&w=500',
 };
 
 export default function About() {
