@@ -2,17 +2,13 @@ import { motion } from 'framer-motion';
 import { Link } from 'wouter';
 import { ArrowRight } from 'lucide-react';
 import designerImg from '@assets/generated_images/about-designer.jpg';
-import asoOkeImg from '@assets/generated_images/aso-oke.jpg';
-import clayImg from '@assets/generated_images/clay-carbon.jpg';
-import expertiseImg from '@assets/generated_images/expertise.jpg';
-import ironSilkImg from '@assets/generated_images/iron-silk.jpg';
 
 const images = {
   designer: designerImg,
-  asoOke: asoOkeImg,
-  clay: clayImg,
-  expertise: expertiseImg,
-  ironSilk: ironSilkImg,
+  asoOke: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&q=80&w=500',
+  clay: 'https://images.unsplash.com/photo-1583391733956-6c78276477e2?auto=format&fit=crop&q=80&w=500',
+  expertise: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&q=80&w=500',
+  ironSilk: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&q=80&w=500',
 };
 
 export default function About() {
@@ -48,7 +44,7 @@ export default function About() {
             <p>Our studio operates as a laboratory where fabrics are manipulated, deconstructed, and reborn. Whether it's a bespoke bridal gown or a conceptual streetwear capsule, our signature remains the same: bold, uncompromised, and meticulously crafted.</p>
           </motion.div>
           <div className="grid grid-cols-2 gap-4">
-            {[images.asoOke, images.clay, images.expertise, images.ironSilk].map((src, i) => <motion.div key={src} className={`overflow-hidden rounded-xl bg-secondary ${i === 1 ? 'mt-8' : ''}`} style={{ aspectRatio: '3/4' }} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, type: 'spring', stiffness: 80 }}><img src={src} alt="Deriavic studio and textile work" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" /></motion.div>)}
+            {[images.asoOke, images.clay, images.expertise, images.ironSilk].map((src, i) => <motion.div key={src} className={`overflow-hidden rounded-xl bg-secondary ${i === 1 ? 'mt-8' : ''}`} style={{ aspectRatio: '3/4' }} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, type: 'spring', stiffness: 80 }}><img src={src} alt="Deriavic studio and textile work" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" loading="lazy" onError={(e) => { e.currentTarget.src = images.designer; }} /></motion.div>)}
           </div>
         </div>
 
