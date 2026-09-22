@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, MessageCircle, MapPin, ArrowUpRight, ChevronLeft, ChevronRight, Calendar, X } from 'lucide-react';
 import { useState, useRef } from 'react';
+import { WHATSAPP_NUMBER, WHATSAPP_DISPLAY, CONTACT_EMAIL } from '@/lib/siteConfig';
 
 // ─── iOS-style Calendar ──────────────────────────────────────────────────────
 
@@ -390,7 +391,7 @@ export default function Contact() {
         {/* Contact Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
           <motion.a 
-            href="mailto:studio@deriavic.com"
+            href={`mailto:${CONTACT_EMAIL}`}
             className="group block p-8 md:p-10 rounded-3xl bg-secondary border border-white/5 hover:border-primary/50 transition-all duration-300 hoverable"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -402,13 +403,13 @@ export default function Contact() {
             <h3 className="text-xl font-serif font-bold text-white mb-2">Email Us</h3>
             <p className="text-muted-foreground mb-10 text-sm">For general inquiries and press.</p>
             <div className="flex items-center justify-between text-white group-hover:text-primary transition-colors">
-              <span className="font-mono text-sm">studio@deriavic.com</span>
+              <span className="font-mono text-sm">{CONTACT_EMAIL}</span>
               <ArrowUpRight size={18} />
             </div>
           </motion.a>
 
           <motion.a 
-            href="https://wa.me/2348000000000"
+            href={`https://wa.me/${WHATSAPP_NUMBER}`}
             target="_blank"
             rel="noopener noreferrer"
             className="group block p-8 md:p-10 rounded-3xl bg-secondary border border-white/5 hover:border-[#25D366]/50 transition-all duration-300 hoverable"
@@ -422,7 +423,7 @@ export default function Contact() {
             <h3 className="text-xl font-serif font-bold text-white mb-2">WhatsApp</h3>
             <p className="text-muted-foreground mb-10 text-sm">For quick replies and booking.</p>
             <div className="flex items-center justify-between text-white group-hover:text-[#25D366] transition-colors">
-              <span className="font-mono text-sm">+234 800 000 0000</span>
+              <span className="font-mono text-sm">{WHATSAPP_DISPLAY}</span>
               <ArrowUpRight size={18} />
             </div>
           </motion.a>

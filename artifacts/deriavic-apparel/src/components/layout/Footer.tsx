@@ -1,6 +1,7 @@
 import { Link } from 'wouter';
 import { Instagram, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { PHONE_TEL, WHATSAPP_DISPLAY } from '@/lib/siteConfig';
 
 const couture = [
   { label: 'Bespoke Couture', href: '/works' },
@@ -89,10 +90,10 @@ export function Footer() {
               Physical viewings by invite only
             </p>
             <a
-              href="tel:+2348031112222"
+              href={`tel:${PHONE_TEL}`}
               className="text-white/40 text-xs hover:text-white/70 transition-colors"
             >
-              ✆ &nbsp;+234 (0) 803 111 2222
+              ✆ &nbsp;{WHATSAPP_DISPLAY}
             </a>
           </motion.div>
 
