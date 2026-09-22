@@ -4,10 +4,12 @@ import { motion } from 'framer-motion';
 export function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
+      setIsVisible(true);
     };
 
     const handleMouseOver = (e: MouseEvent) => {
@@ -25,12 +27,46 @@ export function CustomCursor() {
       }
     };
 
+    // Touch devices (Android/iOS) don't fire mousemove — track the
+    // active finger position instead, so the cursor follows touch too.
+    const updateTouchPosition = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      if (!touch) return;
+      setMousePosition({ x: touch.clientX, y: touch.clientY });
+      setIsVisible(true);
+
+      const target = document.elementFromPoint(touch.clientX, touch.clientY) as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName.toLowerCase() === 'a' ||
+          target.tagName.toLowerCase() === 'button' ||
+          target.closest('a') ||
+          target.closest('button') ||
+          target.classList.contains('hoverable'))
+      ) {
+        setIsHovering(true);
+      } else {
+        setIsHovering(false);
+      }
+    };
+
+    const handleTouchEnd = () => {
+      setIsVisible(false);
+      setIsHovering(false);
+    };
+
     window.addEventListener('mousemove', updateMousePosition);
     window.addEventListener('mouseover', handleMouseOver);
+    window.addEventListener('touchstart', updateTouchPosition, { passive: true });
+    window.addEventListener('touchmove', updateTouchPosition, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd);
 
     return () => {
       window.removeEventListener('mousemove', updateMousePosition);
       window.removeEventListener('mouseover', handleMouseOver);
+      window.removeEventListener('touchstart', updateTouchPosition);
+      window.removeEventListener('touchmove', updateTouchPosition);
+      window.removeEventListener('touchend', handleTouchEnd);
     };
   }, []);
 
@@ -41,6 +77,7 @@ export function CustomCursor() {
         x: mousePosition.x - (isHovering ? 24 : 8),
         y: mousePosition.y - (isHovering ? 24 : 8),
         scale: isHovering ? 3 : 1,
+        opacity: isVisible ? 1 : 0,
       }}
       transition={{
         type: 'spring',

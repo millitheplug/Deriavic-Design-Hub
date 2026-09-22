@@ -137,12 +137,3 @@
 html {
   scroll-behavior: smooth;
 }
-
-/* Only the custom yellow cursor should be visible — hide the native
-   system cursor on devices with a real mouse. Touch devices (which
-   never show a cursor anyway) are left untouched. */
-@media (hover: hover) and (pointer: fine) {
-  * {
-    cursor: none !important;
-  }
-}
