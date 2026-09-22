@@ -2,11 +2,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { Link } from 'wouter';
 import { portfolioPieces, FALLBACK_IMAGE } from '@/components/home/PortfolioPreview';
-import { X, ArrowRight } from 'lucide-react';
+import { X, ArrowRight, ChevronsRight } from 'lucide-react';
 
 export default function Works() {
   const [activeCollection, setActiveCollection] = useState<string | null>(null);
+  const [swiped, setSwiped] = useState<Record<string, boolean>>({});
   const active = portfolioPieces.find(p => p.id === activeCollection);
+
+  const handleRowScroll = (pieceId: string) => {
+    setSwiped((prev) => (prev[pieceId] ? prev : { ...prev, [pieceId]: true }));
+  };
 
   return (
     <main className="min-h-screen bg-background pb-24">
@@ -29,15 +34,41 @@ export default function Works() {
                 <div className="flex items-center gap-2 text-primary opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-300"><span className="text-sm font-medium">Open</span><ArrowRight size={16} /></div>
               </div>
             </div>
-            <div className="w-full overflow-x-auto scrollbar-hide pb-6" style={{ scrollbarWidth: 'none' }}>
-              <div className="flex gap-3 px-6 md:px-12" style={{ width: 'max-content' }}>
-                {piece.images.map((img, i) => (
-                  <motion.div key={i} className="relative flex-shrink-0 overflow-hidden rounded-xl bg-secondary" style={{ width: 'clamp(160px, 30vw, 240px)', height: 'clamp(220px, 42vw, 340px)' }} whileHover={{ scale: 1.02 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
-                    <img src={img} alt={`${piece.title} — look ${i + 1}`} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" loading="lazy" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
-                    <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent"><span className="text-white/60 font-mono text-xs">Look {String(i + 1).padStart(2, '0')}</span></div>
-                  </motion.div>
-                ))}
+            <div className="relative">
+              <div
+                className="w-full overflow-x-auto scrollbar-hide pb-6"
+                style={{ scrollbarWidth: 'none' }}
+                onScroll={() => handleRowScroll(piece.id)}
+              >
+                <div className="flex gap-3 px-6 md:px-12" style={{ width: 'max-content' }}>
+                  {piece.images.map((img, i) => (
+                    <motion.div key={i} className="relative flex-shrink-0 overflow-hidden rounded-xl bg-secondary" style={{ width: 'clamp(160px, 30vw, 240px)', height: 'clamp(220px, 42vw, 340px)' }} whileHover={{ scale: 1.02 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
+                      <img src={img} alt={`${piece.title} — look ${i + 1}`} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" loading="lazy" onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }} />
+                      <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent"><span className="text-white/60 font-mono text-xs">Look {String(i + 1).padStart(2, '0')}</span></div>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
+              {/* Mobile-only swipe cue: fades once the row has actually been scrolled */}
+              <AnimatePresence>
+                {!swiped[piece.id] && (
+                  <motion.div
+                    className="md:hidden pointer-events-none absolute right-0 top-0 bottom-6 flex items-center"
+                    initial={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    <div className="w-16 h-full bg-gradient-to-l from-background to-transparent" />
+                    <motion.div
+                      className="absolute right-4 flex items-center gap-1.5 px-3 py-2 rounded-full bg-black/70 backdrop-blur-sm border border-white/10 text-white/80 text-xs font-mono uppercase tracking-widest"
+                      animate={{ x: [0, -8, 0] }}
+                      transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
+                    >
+                      Swipe <ChevronsRight size={14} className="text-primary" />
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
             <div className="container mx-auto px-6 md:px-12 pb-10">
               <div className="flex flex-col md:flex-row md:items-end gap-6"><p className="text-white/60 max-w-2xl flex-1 leading-relaxed">{piece.description}</p><div className="flex flex-wrap gap-2">{piece.tags.map(tag => <span key={tag} className="px-3 py-1.5 rounded-full border border-white/10 text-xs text-white/50 font-mono uppercase tracking-wide">{tag}</span>)}</div></div>
