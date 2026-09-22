@@ -7,11 +7,14 @@ import { AnimatePresence } from 'framer-motion';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { CustomCursor } from '@/components/layout/CustomCursor';
+import { CartProvider } from '@/contexts/CartContext';
 
 import Home from '@/pages/Home';
 import Works from '@/pages/Works';
 import About from '@/pages/About';
 import Contact from '@/pages/Contact';
+import Shop from '@/pages/Shop';
+import Checkout from '@/pages/Checkout';
 import NotFound from '@/pages/not-found';
 
 const queryClient = new QueryClient();
@@ -24,6 +27,8 @@ function Router() {
         <Route path="/works" component={Works} />
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
+        <Route path="/shop" component={Shop} />
+        <Route path="/checkout" component={Checkout} />
         <Route component={NotFound} />
       </Switch>
     </AnimatePresence>
@@ -34,12 +39,14 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-          <CustomCursor />
-          <Navbar />
-          <Router />
-          <Footer />
-        </WouterRouter>
+        <CartProvider>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+            <CustomCursor />
+            <Navbar />
+            <Router />
+            <Footer />
+          </WouterRouter>
+        </CartProvider>
         <Toaster />
       </TooltipProvider>
     </QueryClientProvider>
